@@ -1,3 +1,4 @@
+
 /*---------------------------------------------------------------------------
 * UNIVERSIDAD DEL VALLE DE GUATEMALA
 * FACULTAD DE INGENIERÍA
@@ -13,7 +14,11 @@
 #include <unistd.h>
 #include <iostream>
 #include <pthread.h>
-
+#include <algorithm>
+#include <chrono>
+#include<vector>
+using namespace std;
+using namespace std::chrono;
 
 void *SeriesValue(void *Value) //function that will fiund the value of a specific "n" number in a series
 {
@@ -24,11 +29,24 @@ void *SeriesValue(void *Value) //function that will fiund the value of a specifi
 
 
 void *SeriesValue(void *Value);
-
-
-// driver code
-int main(int argc, char *argv[])
+ 
+int main()
 {
+ 
+    vector<int> values(10000); //creates vector to measure
+
+    // Generate Random values
+    auto f = []() -> int { return rand() % 10000; };
+ 
+    // Fill up the vector
+    generate(values.begin(), values.end(), f);
+
+ 
+    // Get starting timepoint
+    auto start = high_resolution_clock::now();
+
+    
+
     int maxValue; //variable for user input
     printf("enter max value of the series: ");
     scanf("%d", &maxValue); // this records user input
@@ -46,7 +64,8 @@ int main(int argc, char *argv[])
     }
 
     double *ConvValue;
-    double sum = 0;
+    double sum = 0; // variable to save value of series
+
     for (i = 0; i < maxValue; i++) // adds all threads together
     {
         if (pthread_join(threads[i], (void **)&ConvValue))
@@ -58,6 +77,20 @@ int main(int argc, char *argv[])
         }
     free(ConvValue);
     printf("The final value of the series is: %lf\n", sum); //prints final result
+
+    // Call the function, here sort()
+    sort(values.begin(), values.end());
+ 
+    // Get ending timepoint
+    auto stop = high_resolution_clock::now();
+ 
+    // Get duration. Substart timepoints to
+    // get duration. To cast it to proper unit
+    // use duration cast method
+    auto duration = duration_cast<microseconds>(stop - start);
+ 
+    cout << "Time taken by function: " //print total time since the begginning of the function
+         << duration.count() << " microseconds" << endl;
+ 
     return 0;
 }
-
