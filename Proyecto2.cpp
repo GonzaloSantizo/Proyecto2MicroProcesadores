@@ -20,15 +20,39 @@
 using namespace std;
 using namespace std::chrono;
 
-void *SeriesValue(void *Value) //function that will fiund the value of a specific "n" number in a series
+void *SeriesValue(void *Value) //function that will find the value of a specific "n" number in a series
 {
     int args = *(int *)Value;
     *(double *)Value = (1.00000) / ((double)args * ((double)args + 1)); // 1 / (n(n+1))
     return Value; // returns value
 }
 
+void *SeriesSum(void *Value) //function that will find the value of a specific "n" number in a series
+{
+    int args = *(int *)Value;
+    *(double *)Value = ((double)args * ((double)args + 1)) / (2.00000); // (n(n+1)/2)
+    return Value; // returns value
+}
+
+
+void *SeriesCube(void *Value) //function that will find the value of a specific "n" number in a series
+{
+    int args = *(int *)Value;
+    *(double *)Value = ((double)args * (double)args  * ((double)args + 1) * (double)args + 1) / (4.00000); // (n*n(n+1)(n+1)/4)
+    return Value; // returns value
+}
+
+void *SeriesInverseSquare(void *Value) //function that will find the value of a specific "n" number in a series
+{
+    int args = *(int *)Value;
+    *(double *)Value = (1.00000) / ((double)args * (double)args); // 1/n*n
+    return Value; // returns value
+}
 
 void *SeriesValue(void *Value);
+void *SeriesSum(void *Value);
+void *SeriesCube(void *Value);
+void *SeriesInverseSquare(void *Value);
  
 int main()
 {
@@ -57,7 +81,7 @@ int main()
     {
         int *parameter = (int *)malloc(sizeof(int)); //using malloc to ensure proper function
         *parameter = i + 1;
-        if (pthread_create(&threads[i], NULL, &SeriesValue, parameter) != 0)
+        if (pthread_create(&threads[i], NULL, &SeriesCube, parameter) != 0)
         {
             perror("Failed creating the threads");
         }
