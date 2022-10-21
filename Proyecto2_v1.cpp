@@ -6,7 +6,7 @@
 *
 * Curso:       CC3086 - Programación de microprocesadores     Ciclo II - 2022
 * Descripción: Encontrar el valor de convergencia de una serie
-* Creador Gonzalo Santizo - 21504, Diego Vásquez - 211628.
+* Creador Gonzalo Santizo - 21504, Diego Vásquez - 211628, Walter Cruz - 20673, Gabriel García - 21352.
 ------------------------------------------------------------------------------*/
 #include <semaphore.h>
 #include <stdlib.h>
